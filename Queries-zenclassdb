@@ -1,0 +1,159 @@
+1. Find all the topics and tasks which are taught in the month of October
+var topicsAndTasks = db.topics.aggregate([
+  {
+    $lookup: {
+      from: "tasks",
+      localField: "topic_id",
+      foreignField: "topic_id",
+      as: "tasks"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      topic_name: 1,
+      "tasks.task_details": 1
+    }
+  }
+]).toArray();
+
+topicsAndTasks.forEach(function(topic) {
+  print("Topic: " + topic.topic_name);
+  print("Tasks:");
+  topic.tasks.forEach(function(task) {
+    print(task.task_details);
+  });
+  print("--------------------------------");
+});
+
+Topic: Introduction to Programming
+Tasks:
+Complete Exercise 1
+--------------------------------
+Topic: Introduction to HTML & CSS
+Tasks:
+Complete Exercise 2
+--------------------------------
+
+2. Find all the company drives which appeared between 15 oct-2020 and 31-oct-2020
+var startDate = new Date("2020-10-15T00:00:00Z");
+var endDate = new Date("2020-10-31T23:59:59Z");
+
+var companyDrives = db.company_drives.find({
+  "date": {
+    $gte: startDate,
+    $lte: endDate
+  }
+}, {
+  "_id": 0,
+  "date": 1,
+  "drive_details": 1
+}).toArray();
+
+printjson(companyDrives);
+
+[
+    {
+      date: 2020-10-15T00:00:00.000Z,
+      drive_details: 'ABC Company Placement Drive'
+    },
+    {
+      date: 2020-10-30T00:00:00.000Z,
+      drive_details: 'XYZ Company Placement Drive'
+    }
+  ]
+
+3. Find all the company drives and students who are appeared for the placement.
+var companyDrivesAndStudents = db.company_drives.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "company_drive_id",
+        foreignField: "user_id",
+        as: "students"
+      }
+    },
+    {
+      $unwind: "$students"
+    },
+    {
+      $project: {
+        "_id": 0,
+        "drive_details": 1,
+        "student_name": "$students.name"
+      }
+    }
+  ]).toArray();
+  
+  printjson(companyDrivesAndStudents);
+  
+  [
+    {
+      drive_details: 'ABC Company Placement Drive',
+      student_name: 'Lalitha'
+    },
+    {
+      drive_details: 'XYZ Company Placement Drive',
+      student_name: 'Akash Thapa'
+    }
+  ]
+
+
+4. Find the number of problems solved by the user in codekata
+var problemsSolved = db.codekata.aggregate([
+    {
+      $group: {
+        _id: "$user_id",
+        totalProblemsSolved: { $sum: "$problems_solved" }
+      }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "_id",
+        foreignField: "user_id",
+        as: "user"
+      }
+    },
+    {
+      $unwind: "$user"
+    },
+    {
+      $project: {
+        "_id": 0,
+        "username": "$user.name",
+        "totalProblemsSolved": 1
+      }
+    }
+  ]).toArray();
+  
+  printjson(problemsSolved);
+  [
+    { totalProblemsSolved: 20, username: 'Akash Thapa' },
+    { totalProblemsSolved: 10, username: 'Lalitha' }
+  ]
+
+
+5. Find all the mentors with who has the mentee's count more than 15
+
+var mentors = db.mentors.find(
+    { mentees_count: { $gt: 15 } },
+    { _id: 0, name: 1, mentees_count: 1 }
+  ).toArray();
+  
+  printjson(mentors);
+  [ { name: 'sam', mentees_count: 16 } ] 
+
+
+6. Find the number of users who are absent and task is not submitted  between 15 oct-2020 and 31-oct-2020
+var absentUsersAndUnsubmittedTasks = db.attendance.find({
+    "status": "absent",
+    "date": {
+      $gte: ISODate("2020-10-15"),
+      $lte: ISODate("2020-10-31")
+    }
+  }).count();
+  
+  print(absentUsersAndUnsubmittedTasks);
+ 
+  2

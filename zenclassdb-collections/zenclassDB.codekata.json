@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "64b0e69d523e1ca99414cbe2"
+  },
+  "codekata_id": "1",
+  "user_id": "1",
+  "date": "2020-10-10",
+  "problems_solved": 10
+},
+{
+  "_id": {
+    "$oid": "64b0f116523e1ca99414cc0c"
+  },
+  "codekata_id": "2",
+  "user_id": "2",
+  "date": "2020-10-16",
+  "problems_solved": 20
+}]

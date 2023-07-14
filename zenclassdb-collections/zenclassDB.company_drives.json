@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "64b0edd39a2988f4c243069b"
+  },
+  "company_drive_id": "1",
+  "date": {
+    "$date": "2020-10-15T00:00:00.000Z"
+  },
+  "drive_details": "ABC Company Placement Drive"
+},
+{
+  "_id": {
+    "$oid": "64b0ee429a2988f4c243069c"
+  },
+  "company_drive_id": "2",
+  "date": {
+    "$date": "2020-10-30T00:00:00.000Z"
+  },
+  "drive_details": "XYZ Company Placement Drive"
+}]

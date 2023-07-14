@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "64b0e650523e1ca99414cbd6"
+  },
+  "topic_id": "1",
+  "topic_name": "Introduction to Programming"
+},
+{
+  "_id": {
+    "$oid": "64b0ea00523e1ca99414cc03"
+  },
+  "topic_id": "2",
+  "topic_name": "Introduction to HTML & CSS"
+}]
